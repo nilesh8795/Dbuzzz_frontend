@@ -4,6 +4,8 @@ import Sidebar from '../components/Sidebar';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+
 export default function Home() {
   const [activeFilter, setActiveFilter] = useState('All');
   const [tasks, setTasks] = useState([]);
@@ -22,10 +24,10 @@ export default function Home() {
 
   const fetchTasks = async (filter) => {
     if (!token) return;
-    let url = 'http://localhost:5000/api/tasks/get';
-    if (filter === 'Active') url = 'http://localhost:5000/api/tasks/active';
-    if (filter === 'Pending') url = 'http://localhost:5000/api/tasks/pending';
-    if (filter === 'Completed') url = 'http://localhost:5000/api/tasks/completed';
+    let url = `${API_BASE_URL}/tasks/get`;
+    if (filter === 'Active') url = `${API_BASE_URL}/tasks/active`;
+    if (filter === 'Pending') url = `${API_BASE_URL}/tasks/pending`;
+    if (filter === 'Completed') url = `${API_BASE_URL}/tasks/completed`;
 
     try {
       const res = await fetch(url, {
@@ -46,8 +48,8 @@ export default function Home() {
   const handleAddOrUpdate = async (e) => {
     e.preventDefault();
     const url = isEditing
-      ? `http://localhost:5000/api/tasks/update/${editTaskId}`
-      : 'http://localhost:5000/api/tasks/create';
+      ? `${API_BASE_URL}/tasks/update/${editTaskId}`
+      : `${API_BASE_URL}/tasks/create`;
     const method = isEditing ? 'PUT' : 'POST';
 
     try {
@@ -77,7 +79,7 @@ export default function Home() {
 
   const handleDelete = async (id) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/tasks/delete/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/tasks/delete/${id}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` },
       });

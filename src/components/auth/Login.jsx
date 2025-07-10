@@ -32,6 +32,7 @@ export default function Login() {
   };
 
   const handleLogin = async (e) => {
+    console.log(import.meta.env.VITE_API_URL,"###################");
     e.preventDefault();
     setError('');
     setMessage('');
@@ -42,9 +43,10 @@ export default function Login() {
       return;
     }
     setValidationError('');
-
+    
+    
     try {
-      const response = await axios.post('http://localhost:5000/api/users/login', {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/users/login`, {
         email,
         password,
       });
