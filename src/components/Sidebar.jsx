@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { LogOut } from 'lucide-react'; // import the icon
 
 function Sidebar({ filters, activeFilter, setActiveFilter }) {
   const navigate = useNavigate();
@@ -33,8 +34,9 @@ function Sidebar({ filters, activeFilter, setActiveFilter }) {
       <div className="pt-6">
         <button
           onClick={handleLogout}
-          className="w-full bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg transition"
+          className="w-full bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg transition flex items-center justify-center gap-2"
         >
+          <LogOut size={18} />
           Logout
         </button>
       </div>
