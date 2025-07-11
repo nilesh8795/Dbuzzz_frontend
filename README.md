@@ -16,7 +16,7 @@ Create a `.env` file inside backend root:
 PORT=5000
 MONGODB_URI=mongodb://127.0.0.1:27017/dbuzzz
 JWT_SECRET=your_jwt_secret_key
-JWT_EXPIRES_IN=1d
+JWT_EXPIRES_IN=
 ```
 
 Start the backend server:
