@@ -13,38 +13,28 @@ export default function Login() {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [validationError, setValidationError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const validateForm = () => {
-    if (!email || !password) {
-      return 'All fields are required.';
-    }
-
+    if (!email || !password) return 'All fields are required.';
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      return 'Enter a valid email address.';
-    }
-
-    if (password.length < 6) {
-      return 'Password must be at least 6 characters.';
-    }
-
+    if (!emailRegex.test(email)) return 'Enter a valid email address.';
+    if (password.length < 6) return 'Password must be at least 6 characters.';
     return '';
   };
 
   const handleLogin = async (e) => {
-    console.log(import.meta.env.VITE_API_URL,"###################");
     e.preventDefault();
     setError('');
     setMessage('');
-
     const validation = validateForm();
     if (validation) {
       setValidationError(validation);
       return;
     }
     setValidationError('');
-    
-    
+    setLoading(true);
+
     try {
       const response = await axios.post(`${import.meta.env.VITE_API_URL}/users/login`, {
         email,
@@ -54,11 +44,15 @@ export default function Login() {
       const { token, user } = response.data;
 
       dispatch(setCredentials({ token, user }));
+      localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(user));
 
       setMessage('Login successful!');
       navigate('/');
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -98,9 +92,12 @@ export default function Login() {
 
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+          disabled={loading}
+          className={`w-full py-2 rounded text-white transition ${
+            loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
+          }`}
         >
-          Login
+          {loading ? 'Logging in...' : 'Login'}
         </button>
 
         <p className="text-sm text-center mt-4">

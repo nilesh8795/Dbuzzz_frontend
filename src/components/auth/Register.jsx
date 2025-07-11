@@ -11,25 +11,14 @@ export default function Register() {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [validationError, setValidationError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const validateForm = () => {
-    if (!name || !email || !password) {
-      return 'All fields are required.';
-    }
-
-    if (name.trim().length < 2) {
-      return 'Name must be at least 2 characters.';
-    }
-
+    if (!name || !email || !password) return 'All fields are required.';
+    if (name.trim().length < 2) return 'Name must be at least 2 characters.';
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      return 'Enter a valid email address.';
-    }
-
-    if (password.length < 6) {
-      return 'Password must be at least 6 characters.';
-    }
-
+    if (!emailRegex.test(email)) return 'Enter a valid email address.';
+    if (password.length < 6) return 'Password must be at least 6 characters.';
     return '';
   };
 
@@ -43,7 +32,9 @@ export default function Register() {
       setValidationError(validation);
       return;
     }
+
     setValidationError('');
+    setLoading(true);
 
     try {
       const res = await axios.post(`${import.meta.env.VITE_API_URL}/users/register`, {
@@ -60,6 +51,8 @@ export default function Register() {
       setTimeout(() => navigate('/login'), 1500);
     } catch (err) {
       setError(err.response?.data?.message || 'Registration failed');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -110,9 +103,12 @@ export default function Register() {
 
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+          disabled={loading}
+          className={`w-full py-2 rounded text-white transition ${
+            loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
+          }`}
         >
-          Register
+          {loading ? 'Registering...' : 'Register'}
         </button>
 
         <p className="text-sm text-center mt-4">
