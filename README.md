@@ -1,12 +1,68 @@
-# React + Vite
+# Dbuzzz Frontend (React + Vite)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Setup Instructions
 
-Currently, two official plugins are available:
+### 🔧 Step 1: Backend Setup (Required First)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+```bash
+git clone https://github.com/nilesh8795/Dbuzzz_backend.git
+cd Dbuzzz_backend
+npm install
+```
 
-## Expanding the ESLint configuration
+Create a `.env` file inside backend root:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```env
+PORT=5000
+MONGODB_URI=mongodb://127.0.0.1:27017/dbuzzz
+JWT_SECRET=your_jwt_secret_key
+JWT_EXPIRES_IN=1d
+```
+
+Start the backend server:
+
+```bash
+npm start
+```
+
+Your backend will run on: `http://localhost:5000`  
+(Optional live backend: `https://dbuzzz-backend.onrender.com`)
+
+---
+
+### 🚀 Step 2: Frontend Setup
+
+```bash
+git clone https://github.com/nilesh8795/Dbuzzz_frontend.git
+cd Dbuzzz_frontend
+npm install
+```
+
+Create a `.env` file in frontend root:
+
+```env
+# For local backend
+# VITE_API_URL=http://localhost:5000/api
+
+# For hosted backend
+VITE_API_URL=https://dbuzzz-backend.onrender.com/api
+```
+
+Now start the frontend:
+
+```bash
+npm run dev
+```
+
+Frontend will run at: `http://localhost:5173`
+
+---
+
+### 📦 Tech Stack
+
+- React + Vite
+- Tailwind CSS
+- Redux Toolkit
+- Axios
+- React Router DOM
+
