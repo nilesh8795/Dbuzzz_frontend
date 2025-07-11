@@ -13,6 +13,7 @@ export default function Home() {
   const [isEditing, setIsEditing] = useState(false);
   const [editTaskId, setEditTaskId] = useState(null);
   const [formData, setFormData] = useState({ title: '', description: '', status: 'pending' });
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
   const token = useSelector((state) => state.auth.token);
@@ -24,6 +25,8 @@ export default function Home() {
 
   const fetchTasks = async (filter) => {
     if (!token) return;
+    setLoading(true);
+
     let url = `${API_BASE_URL}/tasks/get`;
     if (filter === 'Active') url = `${API_BASE_URL}/tasks/active`;
     if (filter === 'Pending') url = `${API_BASE_URL}/tasks/pending`;
@@ -38,6 +41,8 @@ export default function Home() {
       else setTasks([]);
     } catch (err) {
       console.error(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -126,7 +131,11 @@ export default function Home() {
             </button>
           </div>
 
-          {tasks.length > 0 ? (
+          {loading ? (
+            <div className="flex justify-center mt-10">
+              <div className="w-8 h-8 border-4 border-blue-600 border-dashed rounded-full animate-spin"></div>
+            </div>
+          ) : tasks.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {tasks.map((task) => (
                 <div
